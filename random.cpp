@@ -3,12 +3,10 @@
 #include "MersenneTwister.h"
 
 int main(){
-	char token;
 	int first,input;
 	MTRand random;
 	
-	std::cin >> token;
-	assert(token == 'p');
+	std::cout << 'p';
 	std::cin >> first;
 	if(first == 2){
 		std::cout << "?";
