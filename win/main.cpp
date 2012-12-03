@@ -36,7 +36,9 @@ int main(){
 		std::cin >> input;
 		array[input*top[input]] = 2;
 		++top[input];
-		std::cout << makenextmove(array,top);
+		nextmove = makenextmove(array,top);
+		++top[nextmove];
+		std::cout << nextmove;
 	}
 	
 	//fun end messages
