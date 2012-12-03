@@ -57,8 +57,15 @@ int main(){
 }
 
 int makenextmove(const int *array,const int *top){
+	int i;
 	bool possiblemoves[7];
 	//first find the moves not allowed due to height constraint
+	for(i = 0; i < 7 ; ++i){
+		if(top[i] == 6){
+			possiblemoves[i] = false;
+		}
+	}
+	
 	//then find the moves that let me win
 	//then remove the moves that allow my opponent to win
 	//if there are no moves remaining...then I guess he wins
