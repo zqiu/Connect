@@ -5,16 +5,19 @@
 int makenextmove(const int *array,const int *top);
 bool isthisgoingtowin(const int *array,const int *top,int move,int player);
 
+#define width 7
+#define height 6
+
 int main(){
 	//my inside data
-	int first,input,nextmove,array[42],top[7],i;
+	int first,input,nextmove,array[width*height],top[width],i;
 	MTRand random;
 	
 	//instantiazition
-	for(i = 0; i < 42; ++i){
+	for(i = 0; i < width*height; ++i){
 		array[i] = 0;
 	}
-	for(i = 0; i < 7; ++i){
+	for(i = 0; i < width; ++i){
 		top[i] = 0;
 	}
 	
@@ -28,17 +31,17 @@ int main(){
 	}else{
 		//i'm going first
 		nextmove = random.randInt(3)+3;
-		array[nextmove*top[nextmove]] = 1;
+		array[nextmove+width*top[nextmove]] = 1;
 		++top[nextmove];
 		std::cout << nextmove;
 	}
 	while(input > 0){
 		std::cin >> input;
-		array[input*top[input]] = 2;
+		array[input+width*top[input]] = 2;
 		++top[input];
 		nextmove = makenextmove(array,top);
 		++top[nextmove];
-		array[nextmove*top[nextmove]] = 1;
+		array[nextmove+width*top[nextmove]] = 1;
 		std::cout << nextmove;
 	}
 	
@@ -81,5 +84,6 @@ int makenextmove(const int *array,const int *top){
 }
 
 bool isthisgoingtowin(const int *array,const int *top,int move,int player){
-	
+	//check if you win going down the row
+	return true;
 }
