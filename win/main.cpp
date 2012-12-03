@@ -38,6 +38,7 @@ int main(){
 		++top[input];
 		nextmove = makenextmove(array,top);
 		++top[nextmove];
+		array[nextmove*top[nextmove]] = 1;
 		std::cout << nextmove;
 	}
 	
@@ -80,5 +81,5 @@ int makenextmove(const int *array,const int *top){
 }
 
 bool isthisgoingtowin(const int *array,const int *top,int move,int player){
-	return true;
+	
 }
