@@ -84,6 +84,45 @@ int makenextmove(const int *array,const int *top){
 }
 
 bool isthisgoingtowin(const int *array,const int *top,int move,int player){
+	int i,connectedhorizontalpieces = 0;
 	//check if you win going down the row
-	return true;
+	if(top[move] >= 3 /*at least three pieces in that row*/ 
+		&& array[move + width*(top[move] - 1)] == player
+		&& array[move + width*(top[move] - 2)] == player
+		&& array[move + width*(top[move] - 3)] == player){
+		return true;
+	}
+	//check if you win diagonally
+	if(top[move] >= 3 && move >= 3
+		&& array[move - 1 + width*(top[move] - 1)] == player
+		&& array[move - 2 + width*(top[move] - 2)] == player
+		&& array[move - 3 + width*(top[move] - 3)] == player){
+		return true;
+	}
+	if(top[move] >= 3 && move < width-3
+		&& array[move + 1 + width*(top[move] - 1)] == player
+		&& array[move + 2 + width*(top[move] - 2)] == player
+		&& array[move + 3 + width*(top[move] - 3)] == player){
+		return true;
+	}
+	//check if you win horizontally
+	for(i = 0; i < 4; ++i){
+		if(move - i < 0 || array[move - i + width*top[move]] != player){
+			break;
+		}else{
+			++connectedhorizontalpieces;
+		}
+	}
+	for(i = 0; i < 4; ++i){
+		if(move + i >= width || array[move + i + width*top[move]] != player){
+			break;
+		}else{
+			++connectedhorizontalpieces;
+		}
+	}
+	if(connectedhorizontalpieces >= 3){
+		return true;
+	}
+	//you don't win sorry.
+	return false;
 }
