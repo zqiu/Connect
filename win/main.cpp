@@ -62,10 +62,10 @@ int main(){
 
 int makenextmove(const int *array,const int *top){
 	int i;
-	bool possiblemoves[7];
+	bool possiblemoves[width];
 	//first find the moves not allowed due to height constraint
-	for(i = 0; i < 7 ; ++i){
-		if(top[i] == 6){
+	for(i = 0; i < width ; ++i){
+		if(top[i] == height){
 			possiblemoves[i] = false;
 		}
 	}
