@@ -32,9 +32,10 @@ int main(){
 		std::cout << "?";
 	}else{
 		//i'm going first
-		nextmove = random.randInt(2)+3;
+		nextmove = random.randInt(3)+2;
 		array[nextmove+width*top[nextmove]] = 1;
 		++top[nextmove];
+		++nextmove;
 		std::cout << nextmove;
 	}
 	std::cin >> input;
