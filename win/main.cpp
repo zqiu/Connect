@@ -84,6 +84,8 @@ int makenextmove(const int *array,const int *top){
 	for(i = 0; i < width; ++i){
 		if(top[i] == height){
 			possiblemoves[i] = false;
+		}else{
+			possiblemoves[i] = true;
 		}
 	}
 	//then find the moves that let me win
