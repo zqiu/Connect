@@ -88,19 +88,13 @@ int makenextmove(const int *array,const int *top){
 			possiblemoves[i] = true;
 		}
 	}
-	//then find the moves that let me win
+	//then find the moves that let me win or prevent my opponent from winning
 	for(i = 0; i < width; ++i){
 		if(possiblemoves[i]){
 			nextmove = i;
 		}
-		if(possiblemoves[i] && isthisgoingtowin(array,top,i,1)){
+		if(possiblemoves[i] && (isthisgoingtowin(array,top,i,1) || isthisgoingtowin(array,top,i,2))){
 			return i;
-		}
-	}
-	//then play the moves that prevent my opponent from winning
-	for(i = 0; i < width; ++i){
-		if(possiblemoves[i] && isthisgoingtowin(array,top,i,2)){
-			return i;//block my opponent from winning
 		}
 	}
 	//remove any of my moves that would allow my opponent to win
