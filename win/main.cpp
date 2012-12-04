@@ -37,18 +37,21 @@ int main(){
 		++top[nextmove];
 		std::cout << nextmove;
 	}
+	std::cin >> input;
 	while(input > 0 || input == -4){
 		if(input == -4){
 			debug(array,top);
+			std::cin >> input;
 			continue;
 		}
-		std::cin >> input;
+		--input;
 		array[input+width*top[input]] = 2;
 		++top[input];
 		nextmove = makenextmove(array,top);
 		++top[nextmove];
 		array[nextmove+width*top[nextmove]] = 1;
 		std::cout << nextmove;
+		std::cin >> input;
 	}
 	
 	//fun end messages
@@ -198,12 +201,10 @@ bool isthisgoingtowin(const int *array,const int *top,int move,int player){
 void debug(const int *array,const int *top){
 	int i,j,val;
 	std::cout << "array\n";
-	for(i = width - 1; i >= 0; --i){
+	for(i = height - 1; i >= 0; --i){
 		for(j = 0; j < width; ++j){
 			val = array[j + i*width];
-			char buffer[20];
-			sprintf(buffer,"%d",val);
-			std::cout << (val == 0 ? " ":buffer);
+			std::cout << val;
 		}	
 		std::cout << "\n";
 	}
