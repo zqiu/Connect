@@ -5,6 +5,7 @@
 int makenextmove(const int *array,const int *top);
 bool isthisgoingtowin(const int *array,const int *top,int move,int player);
 void copyarray(const int *tocopy, int *copyto, int numtocopy);
+void debug(const int *array,const int *top);
 
 #define width 7
 #define height 6
@@ -36,7 +37,11 @@ int main(){
 		++top[nextmove];
 		std::cout << nextmove;
 	}
-	while(input > 0){
+	while(input > 0 || input == -4){
+		if(input == -4){
+			debug(array,top);
+			continue;
+		}
 		std::cin >> input;
 		array[input+width*top[input]] = 2;
 		++top[input];
@@ -188,4 +193,23 @@ bool isthisgoingtowin(const int *array,const int *top,int move,int player){
 	}
 	//you don't win sorry.
 	return false;
+}
+
+void debug(const int *array,const int *top){
+	int i,j,val;
+	std::cout << "array\n";
+	for(i = width - 1; i >= 0; --i){
+		for(j = 0; j < width; ++j){
+			val = array[j + i*width];
+			char buffer[20];
+			sprintf(buffer,"%d",val);
+			std::cout << (val == 0 ? " ":buffer);
+		}	
+		std::cout << "\n";
+	}
+	std::cout << "top\n";
+	for(i = 0; i < width; ++i){
+		std::cout << top[i];
+	}
+	std::cout << "\n";
 }
