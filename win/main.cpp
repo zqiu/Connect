@@ -31,7 +31,7 @@ int main(){
 		std::cout << "?";
 	}else{
 		//i'm going first
-		nextmove = random.randInt(3)+3;
+		nextmove = random.randInt(2)+3;
 		array[nextmove+width*top[nextmove]] = 1;
 		++top[nextmove];
 		std::cout << nextmove;
@@ -83,13 +83,13 @@ int makenextmove(const int *array,const int *top){
 			nextmove = i;
 		}
 		if(possiblemoves[i] && isthisgoingtowin(array,top,i,1)){
-			return i;
+			return i + 1;
 		}
 	}
 	//then play the moves that prevent my opponent from winning
 	for(i = 0; i < width; ++i){
 		if(possiblemoves[i] && isthisgoingtowin(array,top,i,2)){
-			return i;//block my opponent from winning
+			return i + 1;//block my opponent from winning
 		}
 	}
 	//remove any of my moves that would allow my opponent to win
@@ -111,13 +111,12 @@ int makenextmove(const int *array,const int *top){
 		}
 		if(i == width - 1){
 			//guess my opponent wins
-			return nextmove;
+			return nextmove + 1;
 		}
 	}
 	
 	//then look into the future three moves
-	//don't choose any of those that let opponent win
-	//favor those that let me win ... like the three in a row with two sides not blocked
+	//pick out the ones that will give me a chance of winning
 	//look for the moves that let me get three in a row where one of the sides are not blocked
 	//look for the two in a row that are unblocked and in the center
 	//look for the two in a row
