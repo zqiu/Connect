@@ -70,9 +70,9 @@ void copyarray(const int *tocopy, int *copyto, int numtocopy){
 int makenextmove(const int *array,const int *top){
 	int i,nextmove;
 	bool possiblemoves[width];
-	int temp[width*height], 
+	int temp[width*height];
 	//first find the moves not allowed due to height constraint
-	for(i = 0; i < width ; ++i){
+	for(i = 0; i < width; ++i){
 		if(top[i] == height){
 			possiblemoves[i] = false;
 		}
@@ -116,7 +116,7 @@ int makenextmove(const int *array,const int *top){
 }
 
 bool isthisgoingtowin(const int *array,const int *top,int move,int player){
-	int i,connectedhorizontalpieces = 0;
+	int i,connectedpieces;
 	//check if you win going down the row
 	if(top[move] >= 3 /*at least three pieces in that row*/ 
 		&& array[move + width*(top[move] - 1)] == player
@@ -124,35 +124,57 @@ bool isthisgoingtowin(const int *array,const int *top,int move,int player){
 		&& array[move + width*(top[move] - 3)] == player){
 		return true;
 	}
-	//check if you win diagonally
-	if(top[move] >= 3 && move >= 3
-		&& array[move - 1 + width*(top[move] - 1)] == player
-		&& array[move - 2 + width*(top[move] - 2)] == player
-		&& array[move - 3 + width*(top[move] - 3)] == player){
+	//check if you win on the right diagonally
+	connectedpieces = 0;
+	for(i = 0; i < 4; ++i){
+		if(move - i < 0 || top[move] - i < 0 || array[move - i + width*(top[move] - i)] != player){
+			break;
+		}
+		++connectedpieces;
+	}
+	for(i = 0; i < 4; ++i){
+		if(move + i > width - 1 || top[move] + i > width - 1 || array[move + i + width*(top[move] + i)] != player){
+			break;
+		}
+		++connectedpieces;
+	}
+	if(connectedpieces >= 3){
 		return true;
 	}
-	if(top[move] >= 3 && move < width-3
-		&& array[move + 1 + width*(top[move] - 1)] == player
-		&& array[move + 2 + width*(top[move] - 2)] == player
-		&& array[move + 3 + width*(top[move] - 3)] == player){
+	//check if you win on the left diagonal
+	connectedpieces = 0;
+	for(i = 0; i < 4; ++i){
+		if(move - i < 0 || top[move] + i > width - 1 || array[move - i + width*(top[move] + i)] != player){
+			break;
+		}
+		++connectedpieces;
+	}
+	for(i = 0; i < 4; ++i){
+		if(move + i > width - 1 || top[move] - i < 0 || array[move + i + width*(top[move] - i)] != player){
+			break;
+		}
+		++connectedpieces;
+	}
+	if(connectedpieces >= 3){
 		return true;
 	}
 	//check if you win horizontally
+	connectedpieces = 0;
 	for(i = 0; i < 4; ++i){
 		if(move - i < 0 || array[move - i + width*top[move]] != player){
 			break;
 		}else{
-			++connectedhorizontalpieces;
+			++connectedpieces;
 		}
 	}
 	for(i = 0; i < 4; ++i){
 		if(move + i >= width || array[move + i + width*top[move]] != player){
 			break;
 		}else{
-			++connectedhorizontalpieces;
+			++connectedpieces;
 		}
 	}
-	if(connectedhorizontalpieces >= 3){
+	if(connectedpieces >= 3){
 		return true;
 	}
 	//you don't win sorry.
