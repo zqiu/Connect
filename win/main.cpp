@@ -4,6 +4,7 @@
 
 int makenextmove(const int *array,const int *top);
 bool isthisgoingtowin(const int *array,const int *top,int move,int player);
+void copyarray(const int *tocopy, int *copyto, int numtocopy);
 
 #define width 7
 #define height 6
@@ -60,19 +61,50 @@ int main(){
 	}
 }
 
+void copyarray(const int *tocopy, int *copyto, int numtocopy){
+	for(int i = 0; i < numtocopy; ++i){
+		copyto[i] = tocopy[i];
+	}
+}
+
 int makenextmove(const int *array,const int *top){
-	int i;
+	int i,nextmove;
 	bool possiblemoves[width];
+	int temp[width*height], 
 	//first find the moves not allowed due to height constraint
 	for(i = 0; i < width ; ++i){
 		if(top[i] == height){
 			possiblemoves[i] = false;
 		}
 	}
-	
 	//then find the moves that let me win
-	//then remove the moves that allow my opponent to win
+	for(i = 0; i < width; ++i){
+		if(possiblemoves[i]){
+			nextmove = i;
+		}
+		if(possiblemoves[i] && isthisgoingtowin(array,top,i,1)){
+			return i;
+		}
+	}
+	//then play the moves that prevent my opponent from winning
+	for(i = 0; i < width; ++i){
+		if(possiblemoves[i] && isthisgoingtowin(array,top,i,1)){
+			return i;//block my opponent from winning
+		}
+	}
+	//remove any of my moves that would allow my opponent to win
+	
 	//if there are no moves remaining...then I guess he wins
+	for(i = 0; i < width; ++i){
+		if(possiblemoves[i]){
+			break;
+		}
+		if(i == width - 1){
+			//guess you win
+			return nextmove;
+		}
+	}
+	
 	//then look into the future three moves
 	//don't choose any of those that let opponent win
 	//favor those that let me win ... like the three in a row with two sides not blocked
