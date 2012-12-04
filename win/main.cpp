@@ -70,7 +70,7 @@ void copyarray(const int *tocopy, int *copyto, int numtocopy){
 int makenextmove(const int *array,const int *top){
 	int i,nextmove;
 	bool possiblemoves[width];
-	int temp[width*height];
+	int temparray[width*height],temptop[width];
 	//first find the moves not allowed due to height constraint
 	for(i = 0; i < width; ++i){
 		if(top[i] == height){
@@ -88,19 +88,29 @@ int makenextmove(const int *array,const int *top){
 	}
 	//then play the moves that prevent my opponent from winning
 	for(i = 0; i < width; ++i){
-		if(possiblemoves[i] && isthisgoingtowin(array,top,i,1)){
+		if(possiblemoves[i] && isthisgoingtowin(array,top,i,2)){
 			return i;//block my opponent from winning
 		}
 	}
 	//remove any of my moves that would allow my opponent to win
-	
+	for(i = 0; i < width; ++i){
+		if(possiblemoves[i]){
+			copyarray(array,temparray,width*height);
+			copyarray(top,temptop,width);
+			temparray[i+width*top[i]] = 1;
+			++temptop[i];
+			if(isthisgoingtowin(temparray,temptop,i,2)){
+				possiblemoves[i] = false;
+			}
+		}
+	}
 	//if there are no moves remaining...then I guess he wins
 	for(i = 0; i < width; ++i){
 		if(possiblemoves[i]){
 			break;
 		}
 		if(i == width - 1){
-			//guess you win
+			//guess my opponent wins
 			return nextmove;
 		}
 	}
