@@ -1,20 +1,19 @@
 #include <iostream>
 #include <cassert>
 #include "MersenneTwister.h"
+#define width 7
+#define height 6
 
 int makenextmove(const int *array,const int *top);
 bool isthisgoingtowin(const int *array,const int *top,int move,int player);
 void copyarray(const int *tocopy, int *copyto, int numtocopy);
 void debug(const int *array,const int *top);
 
-#define width 7
-#define height 6
-
+//main driver program that interacts with the connect four moderator
 int main(){
 	//my inside data
 	int first,input,nextmove,array[width*height],top[width],i;
-	MTRand random;
-	
+	MTRand random;	
 	//instantiazition
 	for(i = 0; i < width*height; ++i){
 		array[i] = 0;
@@ -22,11 +21,9 @@ int main(){
 	for(i = 0; i < width; ++i){
 		top[i] = 0;
 	}
-	
 	//tells the mod it's ready
 	std::cout << 'p';
 	std::cin >> first;
-	
 	//the meat of the program
 	if(first == 2){
 		std::cout << "?";
@@ -55,7 +52,6 @@ int main(){
 		std::cout << nextmove;
 		std::cin >> input;
 	}
-	
 	//fun end messages
 	if(input == 0){
 		std::cout << "aww something wrong happened\n";
@@ -71,12 +67,15 @@ int main(){
 	}
 }
 
+//copies numtocopy elements from tocopy to copyto
 void copyarray(const int *tocopy, int *copyto, int numtocopy){
 	for(int i = 0; i < numtocopy; ++i){
 		copyto[i] = tocopy[i];
 	}
 }
 
+//will try to determine the next best move. Read the individual 
+//comments to find out the steps it goes through to get that
 int makenextmove(const int *array,const int *top){
 	int i,j,nextmove;
 	bool possiblemoves[width];
@@ -166,6 +165,8 @@ int makenextmove(const int *array,const int *top){
 	return 0;
 }
 
+//given an board ,the number of pieces in each column,where to put the next piece
+//and the player will return if that move will give a win for that player
 bool isthisgoingtowin(const int *array,const int *top,int move,int player){
 	int i,connectedpieces;
 	//check if you win going down the row
@@ -232,6 +233,7 @@ bool isthisgoingtowin(const int *array,const int *top,int move,int player){
 	return false;
 }
 
+//prints out the internal status of the board
 void debug(const int *array,const int *top){
 	int i,j,val;
 	std::cout << "array\n";
