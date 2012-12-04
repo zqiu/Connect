@@ -29,7 +29,7 @@ int main(){
 		std::cout << "?";
 	}else{
 		//i'm going first
-		nextmove = random.randInt(3)+2;
+		nextmove = random.randInt(2)+2;
 		array[nextmove+width*top[nextmove]] = 1;
 		++top[nextmove];
 		++nextmove;
