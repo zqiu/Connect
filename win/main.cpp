@@ -116,7 +116,7 @@ int makenextmove(const int *array,const int *top){
 		}
 	}
 	if(possiblemovesremaining == 0){
-		std::cout << nextmove;
+		return nextmove;
 	}
 	//then look into the future three moves
 	//pick out the ones that will give me a chance of winning
@@ -150,7 +150,7 @@ int makenextmove(const int *array,const int *top){
 	if(max > 1){
 		for(i = 0; i < width; ++i){
 			if(numberofwins[i] == max){
-				return numberofwins[i];
+				return i;
 			}
 		}
 	}
