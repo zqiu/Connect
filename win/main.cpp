@@ -159,7 +159,7 @@ int makenextmove(const int *array,const int *top){
 	//look for the two in a row
 	//move randomly from the possible moves
 	MTRand random;
-	int randnum = random.randInt(possiblemovesremaining);
+	int randnum = int(random.rand() * 7);
 	for(i = 0;randnum != 0 && i < width; ++i){
 		if(possiblemoves[i]){
 			--randnum;
