@@ -145,14 +145,14 @@ bool isthisgoingtowin(const int *array,const int *top,int move,int player){
 	}
 	//check if you win on the right diagonally
 	connectedpieces = 0;
-	for(i = 0; i < 4; ++i){
+	for(i = 1; i < 4; ++i){
 		if(move - i < 0 || top[move] - i < 0 || array[move - i + width*(top[move] - i)] != player){
 			break;
 		}
 		++connectedpieces;
 	}
-	for(i = 0; i < 4; ++i){
-		if(move + i > width - 1 || top[move] + i > width - 1 || array[move + i + width*(top[move] + i)] != player){
+	for(i = 1; i < 4; ++i){
+		if(move + i >= width || top[move] + i >= width || array[move + i + width*(top[move] + i)] != player){
 			break;
 		}
 		++connectedpieces;
@@ -162,14 +162,14 @@ bool isthisgoingtowin(const int *array,const int *top,int move,int player){
 	}
 	//check if you win on the left diagonal
 	connectedpieces = 0;
-	for(i = 0; i < 4; ++i){
-		if(move - i < 0 || top[move] + i > width - 1 || array[move - i + width*(top[move] + i)] != player){
+	for(i = 1; i < 4; ++i){
+		if(move - i < 0 || top[move] + i >= width || array[move - i + width*(top[move] + i)] != player){
 			break;
 		}
 		++connectedpieces;
 	}
-	for(i = 0; i < 4; ++i){
-		if(move + i > width - 1 || top[move] - i < 0 || array[move + i + width*(top[move] - i)] != player){
+	for(i = 1; i < 4; ++i){
+		if(move + i >= width || top[move] - i < 0 || array[move + i + width*(top[move] - i)] != player){
 			break;
 		}
 		++connectedpieces;
@@ -179,14 +179,14 @@ bool isthisgoingtowin(const int *array,const int *top,int move,int player){
 	}
 	//check if you win horizontally
 	connectedpieces = 0;
-	for(i = 0; i < 4; ++i){
+	for(i = 1; i < 4; ++i){
 		if(move - i < 0 || array[move - i + width*top[move]] != player){
 			break;
 		}else{
 			++connectedpieces;
 		}
 	}
-	for(i = 0; i < 4; ++i){
+	for(i = 1; i < 4; ++i){
 		if(move + i >= width || array[move + i + width*top[move]] != player){
 			break;
 		}else{
