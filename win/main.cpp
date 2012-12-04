@@ -78,7 +78,7 @@ void copyarray(const int *tocopy, int *copyto, int numtocopy){
 }
 
 int makenextmove(const int *array,const int *top){
-	int i,nextmove;
+	int i,j,nextmove;
 	bool possiblemoves[width];
 	int temparray[width*height],temptop[width];
 	//first find the moves not allowed due to height constraint
@@ -107,7 +107,7 @@ int makenextmove(const int *array,const int *top){
 		if(possiblemoves[i]){
 			copyarray(array,temparray,width*height);
 			copyarray(top,temptop,width);
-			temparray[i+width*top[i]] = 1;
+			temparray[i+width*temptop[i]] = 1;
 			++temptop[i];
 			if(isthisgoingtowin(temparray,temptop,i,2)){
 				possiblemoves[i] = false;
@@ -124,10 +124,42 @@ int makenextmove(const int *array,const int *top){
 			return nextmove;
 		}
 	}
-	
 	//then look into the future three moves
 	//pick out the ones that will give me a chance of winning
-	//look for the moves that let me get three in a row where one of the sides are not blocked
+	int numberofwins[width],max = 0;
+	for(i = 0; i < width; ++i){
+		int secondlayerarray[width*height],secondlayertop[width];
+		numberofwins[i] = 0;
+		if(possiblemoves[i]){
+			copyarray(array,temparray,width*height);
+			copyarray(top,temptop,width);
+			temparray[i+width*temptop[i]] = 1;
+			++temptop[i];
+			copyarray(temparray,secondlayerarray,width*height);
+			copyarray(temptop,secondlayertop,width);
+			for(j = 0; j < width; ++j){
+				secondlayerarray[j+width*secondlayertop[j]] = 2;
+				++secondlayertop[j];
+				if(isthisgoingtowin(secondlayerarray,secondlayertop,i,1)){
+					++numberofwins[i];
+				}
+				--secondlayertop[j];
+				secondlayerarray[j+width*secondlayertop[j]] = 0;
+			}
+		}
+	}
+	for(i = 0; i < width; ++i){
+		if(numberofwins[i] > max){
+			max = numberofwins[i];
+		}
+	}
+	if(max > 1){
+		for(i = 0; i < width; ++i){
+			if(numberofwins[i] == max){
+				return numberofwins[i];
+			}
+		}
+	}
 	//look for the two in a row that are unblocked and in the center
 	//look for the two in a row
 	//move randomly from the possible moves
