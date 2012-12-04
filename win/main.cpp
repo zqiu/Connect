@@ -164,7 +164,15 @@ int makenextmove(const int *array,const int *top){
 	//look for the two in a row that are unblocked and in the center
 	//look for the two in a row
 	//move randomly from the possible moves
-	return 0;
+	MTRand random;
+	int randnum = random.randInt(possiblemovesremaining);
+	for(i = 0;randnum != 0 && i < width; ++i){
+		if(possiblemoves[i]){
+			--randnum;
+			nextmove = i;
+		}
+	}
+	return nextmove;
 }
 
 //given an board ,the number of pieces in each column,where to put the next piece
