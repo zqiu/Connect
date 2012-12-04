@@ -48,8 +48,9 @@ int main(){
 		array[input+width*top[input]] = 2;
 		++top[input];
 		nextmove = makenextmove(array,top);
-		++top[nextmove];
 		array[nextmove+width*top[nextmove]] = 1;
+		++top[nextmove];
+		++nextmove;
 		std::cout << nextmove;
 		std::cin >> input;
 	}
@@ -91,13 +92,13 @@ int makenextmove(const int *array,const int *top){
 			nextmove = i;
 		}
 		if(possiblemoves[i] && isthisgoingtowin(array,top,i,1)){
-			return i + 1;
+			return i;
 		}
 	}
 	//then play the moves that prevent my opponent from winning
 	for(i = 0; i < width; ++i){
 		if(possiblemoves[i] && isthisgoingtowin(array,top,i,2)){
-			return i + 1;//block my opponent from winning
+			return i;//block my opponent from winning
 		}
 	}
 	//remove any of my moves that would allow my opponent to win
@@ -119,7 +120,7 @@ int makenextmove(const int *array,const int *top){
 		}
 		if(i == width - 1){
 			//guess my opponent wins
-			return nextmove + 1;
+			return nextmove;
 		}
 	}
 	
@@ -129,7 +130,7 @@ int makenextmove(const int *array,const int *top){
 	//look for the two in a row that are unblocked and in the center
 	//look for the two in a row
 	//move randomly from the possible moves
-	return 1;
+	return 0;
 }
 
 bool isthisgoingtowin(const int *array,const int *top,int move,int player){
