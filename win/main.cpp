@@ -77,7 +77,7 @@ void copyarray(const int *tocopy, int *copyto, int numtocopy){
 //will try to determine the next best move. Read the individual 
 //comments to find out the steps it goes through to get that
 int makenextmove(const int *array,const int *top){
-	int i,j,nextmove;
+	int i,j,nextmove,possiblemovesremaining=0;
 	bool possiblemoves[width];
 	int temparray[width*height],temptop[width];
 	//first find the moves not allowed due to height constraint
@@ -118,12 +118,11 @@ int makenextmove(const int *array,const int *top){
 	//if there are no moves remaining...then I guess he wins
 	for(i = 0; i < width; ++i){
 		if(possiblemoves[i]){
-			break;
+			++possiblemovesremaining;
 		}
-		if(i == width - 1){
-			//guess my opponent wins
-			return nextmove;
-		}
+	}
+	if(possiblemovesremaining == 0){
+		std::cout << nextmove;
 	}
 	//then look into the future three moves
 	//pick out the ones that will give me a chance of winning
@@ -161,6 +160,7 @@ int makenextmove(const int *array,const int *top){
 			}
 		}
 	}
+	//look for three out of four in a row
 	//look for the two in a row that are unblocked and in the center
 	//look for the two in a row
 	//move randomly from the possible moves
