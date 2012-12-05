@@ -237,6 +237,85 @@ bool isthisgoingtowin(const int *array,const int *top,int move,int player){
 	return false;
 }
 
+bool unblockedthreeinarow(const int *array,const int *top,int move,int player){
+	int i,connectedpieces;
+	if(move == 0 || move == width - 1){
+		return false;
+	}
+	//check if you have a unblocked 3 in a row on the right diagonal
+	connectedpieces = 0;
+	for(i = 1; i < 3; ++i){
+		if(move - i < 0 || top[move] - i < 0 || array[move - i + width*(top[move] - i)] != player){
+			break;
+		}
+		++connectedpieces;
+	}
+	if(move - i >= 0 && top[move] - i >= 0 && array[move - i + width*(top[move] - i)] != 0){
+			connectedpieces = -10;
+	}
+	for(i = 1; i < 3; ++i){
+		if(move + i >= width || top[move] + i >= width || array[move + i + width*(top[move] + i)] != player){
+			break;
+		}
+		++connectedpieces;
+	}
+	if(move + i < width && top[move] + i < width && array[move + i + width*(top[move] + i)] != 0){
+			connectedpieces = -10;
+	}
+	if(connectedpieces >= 2){
+		return true;
+	}
+	//check if you have a unblocked 3 in a row on the left diagonal
+	connectedpieces = 0;
+	for(i = 1; i < 3; ++i){
+		if(move - i < 0 || top[move] + i >= width || array[move - i + width*(top[move] + i)] != player){
+			break;
+		}
+		++connectedpieces;
+	}
+	if(move - i >= 0 && top[move] + i < width && array[move - i + width*(top[move] + i)] != 0){
+			connectedpieces = -10;
+	}
+	for(i = 1; i < 3; ++i){
+		if(move + i >= width || top[move] - i < 0 || array[move + i + width*(top[move] - i)] != player){
+			break;
+		}
+		++connectedpieces;
+	}
+	if(move + i < width && top[move] - i > 0 && array[move + i + width*(top[move] - i)] != 0){
+			connectedpieces = -10;
+	}
+	if(connectedpieces >= 3){
+		return true;
+	}
+	//check if you have a unblocked 3 in a row horizontally
+	connectedpieces = 0;
+	for(i = 1; i < 3; ++i){
+		if(move - i < 0 || array[move - i + width*top[move]] != player){
+			break;
+		}else{
+			++connectedpieces;
+		}
+	}
+	if(move - i > 0 && array[move - i + width*top[move]] != 0){
+			connectedpieces = -10;
+	}
+	for(i = 1; i < 3; ++i){
+		if(move + i >= width || array[move + i + width*top[move]] != player){
+			break;
+		}else{
+			++connectedpieces;
+		}
+	}
+	if(move + i < width && array[move + i + width*top[move]] != player){
+			connectedpieces = -10;
+	}
+	if(connectedpieces >= 3){
+		return true;
+	}
+	return false;
+}
+
 //prints out the internal status of the board
 void debug(const int *array,const int *top){
 	int i,j,val;
