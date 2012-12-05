@@ -185,15 +185,16 @@ int makenextmove(const int *array,const int *top){
 		}
 	}
 	//look for the two in a row
-	int numberoftwos[possiblemovesremaining];
-	for(i = 0,j = 0; i < width; ++i){
+	int numberoftwos[width];
+	for(i = 0; i < width; ++i){
 		if(possiblemoves[i]){
-			numberoftwos[j] = numoftwos(array,top,j,1);
-			++j;
+			numberoftwos[i] = numoftwos(array,top,i,1);
+		}else{
+			numberoftwos[i] = 0;
 		}
 	}
 	max = 0;
-	for(i = 0; i < possiblemovesremaining; ++i){
+	for(i = 0; i < width; ++i){
 		if(numberoftwos[i] > max){
 			max = numberoftwos[i];
 		}
@@ -201,15 +202,7 @@ int makenextmove(const int *array,const int *top){
 	if(max >= 2){
 		for(i = 0; i < possiblemovesremaining; ++i){
 			if(numberoftwos[i] == max){
-				break;
-			}
-		}
-		for(j = 0; j < width; ++j){
-			if(possiblemoves[j]){
-				--i;
-			}
-			if(i == 0){
-				return j;
+				return i;
 			}
 		}
 	}
@@ -393,7 +386,7 @@ void debug(const int *array,const int *top){
 
 //count the number of two in a row you would get from dropping into that place
 int numoftwos(const int *array,const int *top,int move,int player){
-	int i,ans;
+	int i,ans = 0;
 	//check bottom three
 	for(i = -1; i < 2; ++i){
 		if(top[move] >= 1 && move + i >= 0 && move + i < width && array[move + i + width*(top[move] - 1)]){
