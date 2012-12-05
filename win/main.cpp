@@ -183,9 +183,10 @@ int makenextmove(const int *array,const int *top){
 			}
 		}
 	}
-	//look for three out of four in a row
-	//look for the two in a row that are unblocked and in the center
 	//look for the two in a row
+	for(i = 0; i < width; ++i){
+		
+	}
 	//move randomly from the possible moves
 	MTRand random;
 	int randnum = int(random.rand() * 7);
@@ -266,6 +267,7 @@ bool isthisgoingtowin(const int *array,const int *top,int move,int player){
 	return false;
 }
 
+//will return true if placing a piece in that column will make a unblocked three in a row
 bool unblockedthreeinarow(const int *array,const int *top,int move,int player){
 	int i,connectedpieces;
 	if(move == 0 || move == width - 1){
