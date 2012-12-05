@@ -9,6 +9,7 @@ bool isthisgoingtowin(const int *array,const int *top,int move,int player);
 void copyarray(const int *tocopy, int *copyto, int numtocopy);
 void debug(const int *array,const int *top);
 bool unblockedthreeinarow(const int *array,const int *top,int move,int player);
+int numoftwos(const int *array,const int *top,int move,int player);
 
 //main driver program that interacts with the connect four moderator
 int main(){
@@ -184,12 +185,37 @@ int makenextmove(const int *array,const int *top){
 		}
 	}
 	//look for the two in a row
-	for(i = 0; i < width; ++i){
-		
+	int numberoftwos[possiblemovesremaining];
+	for(i = 0,j = 0; i < width; ++i){
+		if(possiblemoves[i]){
+			numberoftwos[j] = numoftwos(array,top,j,1);
+			++j;
+		}
+	}
+	max = 0;
+	for(i = 0; i < possiblemovesremaining; ++i){
+		if(numberoftwos[i] > max){
+			max = numberoftwos[i];
+		}
+	}
+	if(max >= 2){
+		for(i = 0; i < possiblemovesremaining; ++i){
+			if(numberoftwos[i] == max){
+				break;
+			}
+		}
+		for(j = 0; j < width; ++j){
+			if(possiblemoves[j]){
+				--i;
+			}
+			if(i == 0){
+				return j;
+			}
+		}
 	}
 	//move randomly from the possible moves
 	MTRand random;
-	int randnum = int(random.rand() * 7);
+	int randnum = int(random.rand() * possiblemovesremaining);
 	for(i = 0;randnum != 0 && i < width; ++i){
 		if(possiblemoves[i]){
 			--randnum;
@@ -363,4 +389,24 @@ void debug(const int *array,const int *top){
 		std::cout << top[i];
 	}
 	std::cout << "\n";
+}
+
+//count the number of two in a row you would get from dropping into that place
+int numoftwos(const int *array,const int *top,int move,int player){
+	int i,ans;
+	//check bottom three
+	for(i = -1; i < 2; ++i){
+		if(top[move] >= 1 && move + i >= 0 && move + i < width && array[move + i + width*(top[move] - 1)]){
+			++ans;
+		}
+	}
+	for(i = 0; i < 2; ++i){
+		if(move - 1 >= 0 && top[move] + i < height && array[move - 1 + width*(top[move] + i)]){
+			++ans;
+		}
+		if(move + 1 < width && top[move] + i < height && array[move + 1 + width*(top[move] + i)]){
+			++ans;
+		}
+	}
+	return ans;
 }
