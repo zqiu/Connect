@@ -8,6 +8,7 @@ int makenextmove(const int *array,const int *top);
 bool isthisgoingtowin(const int *array,const int *top,int move,int player);
 void copyarray(const int *tocopy, int *copyto, int numtocopy);
 void debug(const int *array,const int *top);
+bool unblockedthreeinarow(const int *array,const int *top,int move,int player);
 
 //main driver program that interacts with the connect four moderator
 int main(){
@@ -110,6 +111,34 @@ int makenextmove(const int *array,const int *top){
 		}
 	}
 	//if there are no moves remaining...then I guess he wins
+	for(i = 0; i < width; ++i){
+		if(possiblemoves[i]){
+			++possiblemovesremaining;
+		}
+	}
+	if(possiblemovesremaining == 0){
+		return nextmove;
+	}
+	//try to place into the ones that give me an unblocked 3 in a row or place 
+	//into the ones that block my opponent from getting a unblocked 3 in a row
+	for(i = 0; i < width; ++i){
+		if(possiblemoves[i] && (unblockedthreeinarow(array,top,i,1) || unblockedthreeinarow(array,top,i,2))){
+			return i;
+		}
+	}
+	//look into the future don't play into any of those that give my opponent a 3 in a row
+	for(i = 0; i < width; ++i){
+		if(possiblemoves[i]){
+			copyarray(array,temparray,width*height);
+			copyarray(top,temptop,width);
+			temparray[i+width*temptop[i]] = 1;
+			++temptop[i];
+			if(unblockedthreeinarow(temparray,temptop,i,2)){
+				possiblemoves[i] = false;
+			}
+		}
+	}
+	//if there are no moves remaining...then I guess he can have an unblocked 3 in a row
 	for(i = 0; i < width; ++i){
 		if(possiblemoves[i]){
 			++possiblemovesremaining;
@@ -282,10 +311,10 @@ bool unblockedthreeinarow(const int *array,const int *top,int move,int player){
 		}
 		++connectedpieces;
 	}
-	if(move + i < width && top[move] - i > 0 && array[move + i + width*(top[move] - i)] != 0){
+	if(move + i < width && top[move] - i >= 0 && array[move + i + width*(top[move] - i)] != 0){
 			connectedpieces = -10;
 	}
-	if(connectedpieces >= 3){
+	if(connectedpieces >= 2){
 		return true;
 	}
 	//check if you have a unblocked 3 in a row horizontally
@@ -307,10 +336,10 @@ bool unblockedthreeinarow(const int *array,const int *top,int move,int player){
 			++connectedpieces;
 		}
 	}
-	if(move + i < width && array[move + i + width*top[move]] != player){
+	if(move + i < width && array[move + i + width*top[move]] != 0){
 			connectedpieces = -10;
 	}
-	if(connectedpieces >= 3){
+	if(connectedpieces >= 2){
 		return true;
 	}
 	return false;
